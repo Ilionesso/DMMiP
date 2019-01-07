@@ -10,11 +10,11 @@ def init_kafka_consumer(topic_name):
                          consumer_timeout_ms=60000,
                          bootstrap_servers=['ip-172-31-6-28.ec2.internal:9092',
                                             'ip-172-31-11-76.ec2.internal:9092',
-                                            'ip-172-31-5-160.ec2.internal:9092'])
+                                            'ip-172-31-5-160.ec2.internal:9092'],
+                         value_deserializer=lambda m: json.loads(m.decode('utf-8')))
 
 
-def decode_matrix(matrix_bytes, matrix_data_type, matrix_shape):
-    return numpy.frombuffer(matrix_bytes, dtype=matrix_data_type).reshape(matrix_shape)
+
 
 
 if __name__ == '__main__':
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     consumer = init_kafka_consumer(topic_name)
 
     for msg in consumer:
-        print(decode_matrix(msg.value, 'int64',(500, 500)))
+        print(json.loads(msg))
 
     # if consumer is not None:
     #     consumer.close()

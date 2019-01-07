@@ -1,5 +1,7 @@
 import datetime
+import json
 
+import numpy
 from kafka import KafkaProducer
 
 
@@ -8,7 +10,8 @@ def init_kafka_producer():
     try:
         _producer = KafkaProducer(bootstrap_servers=['ip-172-31-6-28.ec2.internal:9092',
                                                      'ip-172-31-11-76.ec2.internal:9092',
-                                                     'ip-172-31-5-160.ec2.internal:9092'])
+                                                     'ip-172-31-5-160.ec2.internal:9092'],
+                                  value_serializer=lambda v: json.dumps(v).encode('utf-8'))
     except Exception as ex:
         print('Exception while connecting Kafka')
         print(str(ex))
