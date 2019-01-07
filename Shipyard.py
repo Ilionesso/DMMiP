@@ -5,18 +5,13 @@ import numpy
 from MatrixFiles import readMatrixA
 from KafkaProducer import init_kafka_producer, publish_message
 
-class NumpyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, numpy.ndarray):
-            return obj.tolist()
-        return json.JSONEncoder.default(self, obj)
 
 matrix = readMatrixA()
 matrix_data_type = matrix.dtype.name
 matrix_shape = matrix.shape
 
 
-json_dump = json.dumps({'matrix': matrix, 'shape': matrix_shape, 'data_type': matrix_data_type}, cls=NumpyEncoder)
+json_dump = json.dumps({'matrix': matrix.tobytes(), 'shape': matrix_shape, 'data_type': matrix_data_type})
 
 producer = init_kafka_producer()
 publish_message(producer, 'test', json_dump)

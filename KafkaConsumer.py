@@ -11,7 +11,7 @@ def init_kafka_consumer(topic_name):
                          bootstrap_servers=['ip-172-31-6-28.ec2.internal:9092',
                                             'ip-172-31-11-76.ec2.internal:9092',
                                             'ip-172-31-5-160.ec2.internal:9092'],
-                         value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+                         value_deserializer=lambda m: json.loads(m.decode()))
 
 
 
