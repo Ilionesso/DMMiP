@@ -23,7 +23,7 @@ if __name__ == '__main__':
     consumer = init_kafka_consumer(topic_name)
 
     for msg in consumer:
-        print(json.loads(msg))
+        print(numpy.asarray(msg["a"]))
 
     # if consumer is not None:
     #     consumer.close()

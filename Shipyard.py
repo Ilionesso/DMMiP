@@ -12,7 +12,11 @@ class NumpyEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 matrix = readMatrixA()
-json_dump = json.dumps({'matrix': matrix}, cls=NumpyEncoder)
+matrix_data_type = matrix.dtype.name
+matrix_shape = matrix.shape
+
+
+json_dump = json.dumps({'matrix': matrix, 'shape': matrix_shape, 'data_type': matrix_data_type}, cls=NumpyEncoder)
 
 producer = init_kafka_producer()
 publish_message(producer, 'test', json_dump)
