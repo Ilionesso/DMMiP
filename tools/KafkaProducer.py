@@ -3,7 +3,7 @@ import datetime
 from kafka import KafkaProducer
 
 
-def connect_kafka_producer():
+def init_kafka_producer():
     _producer = None
     try:
         _producer = KafkaProducer(bootstrap_servers=['ip-172-31-6-28.ec2.internal:9092',
@@ -32,6 +32,6 @@ for i in range(20):
     new_Value = str(i) + " " + str(datetime.datetime.now())
     some_data_source.append(new_Value)
 
-p = connect_kafka_producer()
+p = init_kafka_producer()
 for data in some_data_source:
     publish_message(p, 'test', data)
