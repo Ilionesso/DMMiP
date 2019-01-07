@@ -7,7 +7,7 @@ def connect_kafka_producer():
     _producer = None
     try:
         _producer = KafkaProducer(bootstrap_servers=['ip-172-31-6-28.ec2.internal:9092',
-                                                     'ip-172-31-11-76.ec2.internal:9092,',
+                                                     'ip-172-31-11-76.ec2.internal:9092',
                                                      'ip-172-31-5-160.ec2.internal:9092'])
     except Exception as ex:
         print('Exception while connecting Kafka')
@@ -19,12 +19,12 @@ def connect_kafka_producer():
 def publish_message(producer_instance, topic_name, value):
     try:
         # key_bytes = bytes(key, encoding='utf-8')
-        value_bytes = bytes(value, encoding='utf-8')
+        value_bytes = value.encode()
         producer_instance.send(topic_name, value=value_bytes)
         producer_instance.flush()
         print('Message published successfully.')
     except Exception as ex:
-        print('Exception in publishing message: %e' % ex)
+        print('Exception in publishing message' + str(ex))
 
 
 some_data_source = []
