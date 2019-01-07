@@ -1,8 +1,6 @@
-import random
-import os
 import numpy
 
-from tools.MatrixFiles import saveMatrix
+from MatrixFiles import saveMatrix
 
 n = 512
 maximal = 10

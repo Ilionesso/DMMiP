@@ -1,7 +1,7 @@
 import numpy
 from math import ceil, log
 
-from tools.MatrixFiles import readMatrixA, readMatrixB, saveMatrix
+from MatrixFiles import readMatrixA, readMatrixB, saveMatrix
 
 leafsize = 128
 matrixFileNameA = "inputMatrixA.txt"

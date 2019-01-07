@@ -3,10 +3,11 @@ import numpy
 matrixAfilename = "inputMatrixA.txt"
 matrixBfilename = "inputMatrixB.txt"
 outputFilename = "outputMatrix.txt"
+resourceFolderName = "resources/"
 
 
 def readMatrix(filename):
-	return numpy.genfromtxt(filename, dtype="i")
+	return numpy.genfromtxt(resourceFolderName+filename, dtype="i")
 
 
 def readMatrixA():
@@ -18,4 +19,4 @@ def readMatrixB():
 
 
 def saveMatrix(matrix, filename=outputFilename, fmt="%1i"):
-	numpy.savetxt(filename, matrix, fmt)
+	numpy.savetxt(resourceFolderName + filename, matrix, fmt)
