@@ -99,13 +99,13 @@ def prepare_p_instructions(A, B, tam):
 	b22 = B[newTam:tam, newTam:tam]
 	
 	p_matrices = {}
-	p_matrices[1] = {"matrix_a": a11 + a22, "matrix_b": a11 + a22}
-	p_matrices[2] = {"matrix_a": a21 + a22, "matrix_b": b11}
-	p_matrices[3] = {"matrix_a": a11, "matrix_b": b12 - b22}
-	p_matrices[4] = {"matrix_a": a22, "matrix_b":  b21 - b11}
-	p_matrices[5] = {"matrix_a": a11 + a12, "matrix_b": b22}
-	p_matrices[6] = {"matrix_a": a21 - a11, "matrix_b": b11 + b12}
-	p_matrices[7] = {"matrix_a": a12 - a22, "matrix_b": b21 + b22}
+	p_matrices['1'] = {"matrix_a": a11 + a22, "matrix_b": a11 + a22}
+	p_matrices['2'] = {"matrix_a": a21 + a22, "matrix_b": b11}
+	p_matrices['3'] = {"matrix_a": a11, "matrix_b": b12 - b22}
+	p_matrices['4'] = {"matrix_a": a22, "matrix_b":  b21 - b11}
+	p_matrices['5'] = {"matrix_a": a11 + a12, "matrix_b": b22}
+	p_matrices['6'] = {"matrix_a": a21 - a11, "matrix_b": b11 + b12}
+	p_matrices['7'] = {"matrix_a": a12 - a22, "matrix_b": b21 + b22}
 	
 	return p_matrices
 
