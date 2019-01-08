@@ -118,6 +118,7 @@ dmypy.json
 
 # Resources
 resources/
+config.ini
 control.txt
 inputMatrixA.txt
 inputMatrixB.txt

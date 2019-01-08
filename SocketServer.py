@@ -2,10 +2,10 @@ import pickle
 import socket
 
 
-def get_socket_server(HOST, PORT):
+def get_socket_server(PORT):
 
 	with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-		s.bind((HOST, PORT))
+		s.bind(('localhost', PORT))
 		s.listen()
 		return s
 

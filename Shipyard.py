@@ -11,7 +11,7 @@ from Worker import WorkerState, Worker
 
 class Shipyard(Thread): # make a singletone?
 
-    def __init__(self, host, port) -> None:
+    def __init__(self, host, port):
         super().__init__()
         self.def_in = 0
         self.def_out = 0
@@ -20,12 +20,12 @@ class Shipyard(Thread): # make a singletone?
         self.downtop_tasks = {}
         self.host = host
         self.port = port
-        self.server = get_socket_server(self.host, self.port)
+        self.server = get_socket_server(self.port)
         self.consumer = init_kafka_consumer()
         self.producer = init_kafka_producer()
 
     def run(self):
-        while True: # TODO MAKE AN ENTRY
+        while True:
             while True:
                 downtop_data = try_get_socket_message(self.server)
                 if downtop_data is None:
@@ -41,7 +41,8 @@ class Shipyard(Thread): # make a singletone?
                 topdown_task = consume(self.consumer)
                 if topdown_task is not None:
                     self.def_in += 1
-                    new_downtop_awaited_task = DownTopTask(topdown_task.master_hostname,
+                    new_downtop_awaited_task = DownTopTask(topdown_task.master_host,
+                                                           topdown_task.master_port,
                                                            topdown_task.master_task_id,
                                                            topdown_task.current_id)
                     self.downtop_tasks[topdown_task.master_task_id + topdown_task.current_id] = new_downtop_awaited_task
@@ -66,12 +67,12 @@ class Shipyard(Thread): # make a singletone?
 
     def send_topdown_task(self, task):
         self.def_out += 1
-        task.master_hostname = self.host # TODO DIVIDE HOSTNAME
+        task.master_hostname = self.host
         produce(self.producer, task)
 
     def send_downtop_responce(self, responce):
         self.def_in -= 1
-        send_socket_message(responce.host, responce.port, responce)  # TODO DIVIDE HOSTNAME
+        send_socket_message(responce.host, responce.port, responce)
 
     def append_downtop_tasks(self, data):
         if data['task_id'] not in self.downtop_tasks:
@@ -83,7 +84,7 @@ class Shipyard(Thread): # make a singletone?
         entry_task = EntryTask()
         output = entry_task.compute()
         if type(output) == list:
-            self.downtop_tasks[0] = DownTopTask(None, None, 0)
+            self.downtop_tasks[0] = DownTopTask(None, None, None, 0)
             [self.send_topdown_task(task) for task in output]
 
 

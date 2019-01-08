@@ -13,7 +13,7 @@ class TaskType(Enum):
 class EntryTask:
     task_type = TaskType.INTRO
 
-    def __init__(self) -> None:
+    def __init__(self):
         super().__init__()
         self.matrix_a = readMatrixA()
         self.matrix_b = readMatrixB()
