@@ -7,6 +7,7 @@ LEAFSIZE = 128
 
 
 class TaskType(Enum):
+    INTRO = -1
     TOPDOWN = 0
     DOWNTOP = 1
 
