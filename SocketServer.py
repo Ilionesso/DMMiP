@@ -7,7 +7,7 @@ def get_socket_server(port):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		print("Socket successfully created")
 		s.bind(('localhost', int(port)))
-		s.listen()
+		s.listen(120)
 		print("socket binded to %s" % (port))
 	except socket.error as err:
 		print("socket creation failed with error %s" % (err))
