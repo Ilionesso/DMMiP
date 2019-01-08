@@ -27,17 +27,20 @@ class Shipyard(Thread): # make a singletone?
     def run(self):
         while True:
             while True:
+                print("check for downtop responces")
                 downtop_data = try_get_socket_message(self.server)
                 if downtop_data is None:
                     break
                 [self.append_downtop_tasks(data_peace) for data_peace in downtop_data]
 
             if self.worker.state == WorkerState.DONE:
+                print("check for done tasks")
                 self.parse_and_send_computed(self.worker.output)
                 # def_in/plus def_out
                 self.worker.state = WorkerState.WAITING
 
             if self.worker.state == WorkerState.WAITING:  # try to get and compute topdown task
+                print("check for topdown tasks")
                 topdown_task = consume(self.consumer)
                 if topdown_task is not None:
                     self.def_in += 1
@@ -49,7 +52,8 @@ class Shipyard(Thread): # make a singletone?
                     self.worker.task = topdown_task
                     self.worker.state = WorkerState.BUSY
 
-            if self.worker.state == WorkerState.WAITING:  # try to get and compute
+            if self.worker.state == WorkerState.WAITING:
+                print("check for downtop tasks")  # try to get and compute downtop tasks
                 for downtop_task in self.downtop_tasks:
                     if downtop_task.is_complete():
                         self.downtop_tasks.pop(downtop_task)
