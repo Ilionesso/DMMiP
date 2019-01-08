@@ -2,12 +2,15 @@ import pickle
 import socket
 
 
-def get_socket_server(PORT):
-
-	with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-		s.bind(('localhost', PORT))
+def get_socket_server(port):
+	try:
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		print("Socket successfully created")
+		s.bind(('localhost', port))
 		s.listen()
-		return s
+		print("socket binded to %s" % (port))
+	except socket.error as err:
+		print("socket creation failed with error %s" % (err))
 
 def try_get_socket_message(server):
 	conn, addr = server.accept()
