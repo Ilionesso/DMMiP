@@ -9,7 +9,7 @@ class WorkerState(Enum):
 
 class Worker(Thread):
 	def __init__(self):
-		super().__init__()
+		Thread.__init__(self)
 		self.state = WorkerState.WAITING
 		self.task = None
 		self.output = None

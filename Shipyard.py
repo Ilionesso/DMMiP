@@ -12,7 +12,7 @@ from Worker import WorkerState, Worker
 class Shipyard(Thread): # make a singletone?
 
     def __init__(self, host, port):
-        super().__init__()
+        Thread.__init__(self)
         self.def_in = 0
         self.def_out = 0
         self.worker = Worker()
