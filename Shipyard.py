@@ -1,42 +1,36 @@
-import json
-import pickle
-import socket
-from enum import Enum
+
+import atexit
 from threading import Thread
 
-import numpy
 
-from KafkaConsumer import consume
-from MatrixFiles import readMatrixA
+from KafkaConsumer import consume, init_kafka_consumer
 from KafkaProducer import init_kafka_producer, produce
 from SocketServer import send_socket_message, try_get_socket_message, get_socket_server
-from Tasks import TopDownTask, TaskType, TaskResponse, DownTopTask
+from Tasks import TaskType, DownTopTask, EntryTask
 from Worker import WorkerState, Worker
 
-HOSTNAME = "localhost:ololo"
+class Shipyard(Thread): # make a singletone?
 
-
-class Shipyard(Thread):
-
-    def __init__(self) -> None:
+    def __init__(self, host, port) -> None:
         super().__init__()
         self.def_in = 0
         self.def_out = 0
         self.worker = Worker()
+        self.worker.start()
         self.downtop_tasks = {}
-        self.host = 'localololo'
-        self.port = 'portokoko'
+        self.host = host
+        self.port = port
         self.server = get_socket_server(self.host, self.port)
-        self.brokers = ['ip-172-31-6-28.ec2.internal:9092',
-                        'ip-172-31-11-76.ec2.internal:9092',
-                        'ip-172-31-5-160.ec2.internal:9092']
-        self.consumer = пуе
-        self.producer = None
+        self.consumer = init_kafka_consumer()
+        self.producer = init_kafka_producer()
 
     def run(self):
         while True: # TODO MAKE AN ENTRY
-            downtop_data = try_get_socket_message(self.server)
-            [self.append_downtop_tasks(data_peace) for data_peace in downtop_data]
+            while True:
+                downtop_data = try_get_socket_message(self.server)
+                if downtop_data is None:
+                    break
+                [self.append_downtop_tasks(data_peace) for data_peace in downtop_data]
 
             if self.worker.state == WorkerState.DONE:
                 self.parse_and_send_computed(self.worker.output)
@@ -49,8 +43,7 @@ class Shipyard(Thread):
                     self.def_in += 1
                     new_downtop_awaited_task = DownTopTask(topdown_task.master_hostname,
                                                            topdown_task.master_task_id,
-                                                           topdown_task.current_id,
-                                                           topdown_task.tam)
+                                                           topdown_task.current_id)
                     self.downtop_tasks[topdown_task.master_task_id + topdown_task.current_id] = new_downtop_awaited_task
                     self.worker.task = topdown_task
                     self.worker.state = WorkerState.BUSY
@@ -73,7 +66,7 @@ class Shipyard(Thread):
 
     def send_topdown_task(self, task):
         self.def_out += 1
-        task.hostname = HOSTNAME
+        task.master_hostname = self.host # TODO DIVIDE HOSTNAME
         produce(self.producer, task)
 
     def send_downtop_responce(self, responce):
@@ -85,3 +78,17 @@ class Shipyard(Thread):
             pass
         data['task_id'].p_matrices[data['p_id']] = data['matrix']
         self.def_out -= 1  # Would be nice to have a transaction
+
+    def compute_entry(self):
+        entry_task = EntryTask()
+        output = entry_task.compute()
+        if type(output) == list:
+            self.downtop_tasks[0] = DownTopTask(None, None, 0)
+            [self.send_topdown_task(task) for task in output]
+
+
+    @atexit.register
+    def cleanup(self):
+        self.server.close()
+
+

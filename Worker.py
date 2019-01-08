@@ -8,12 +8,12 @@ class WorkerState(Enum):
 	DONE = 2
 
 class Worker(Thread):
-	def __init__(self, shipyard):
+	def __init__(self):
 		super().__init__()
 		self.state = WorkerState.WAITING
 		self.task = None
 		self.output = None
-		self.shipyard = shipyard
+		# make shipyard a singletone/bind a worker to a single shipyard/do nothing
 		
 	def run(self):
 		while True:
