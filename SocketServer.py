@@ -9,6 +9,7 @@ def get_socket_server(port):
 		s.bind(('', int(port)))
 		s.listen(120)
 		print("socket binded to %s" % (port))
+		return s
 	except socket.error as err:
 		print("socket creation failed with error %s" % (err))
 
