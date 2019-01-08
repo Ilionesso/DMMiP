@@ -88,8 +88,8 @@ class Shipyard(Thread): # make a singletone?
             [self.send_topdown_task(task) for task in output]
 
 
-    @atexit.register
-    def cleanup(self):
-        self.server.close()
+    # @atexit.register
+    # def cleanup(self):
+    #     self.server.close()
 
 
