@@ -35,7 +35,7 @@ class EntryTask:
 
 
 class TopDownTask:
-    task_type = TaskType.TOP_DOWN
+    task_type = TaskType.TOPDOWN
 
     def __init__(self, master_task_id, current_id, matrix_a, matrix_b):
         super().__init__()
@@ -68,7 +68,7 @@ class TopDownTask:
 
 
 class DownTopTask:
-    task_type = TaskType.DOWN_TOP
+    task_type = TaskType.DOWNTOP
 
     def __init__(self, master_host, master_port, master_task_id, current_id, original_tam=None):
         super().__init__()
