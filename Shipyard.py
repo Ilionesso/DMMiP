@@ -5,7 +5,7 @@ from threading import Thread
 
 from KafkaConsumer import consume, init_kafka_consumer
 from KafkaProducer import init_kafka_producer, produce
-from SocketServer import send_socket_message, try_get_socket_message, get_socket_server
+from SocketServer import SocketServer, send_socket_message
 from Tasks import TaskType, DownTopTask, EntryTask
 from Worker import WorkerState, Worker
 
@@ -20,7 +20,7 @@ class Shipyard(Thread): # make a singletone?
         self.downtop_tasks = {}
         self.host = host
         self.port = port
-        self.server = get_socket_server(self.port)
+        self.server = SocketServer(self.port)
         self.consumer = init_kafka_consumer()
         self.producer = init_kafka_producer()
 
@@ -28,7 +28,7 @@ class Shipyard(Thread): # make a singletone?
         while True:
             while True:
                 print("check for downtop responces")
-                downtop_data = try_get_socket_message(self.server)
+                downtop_data = self.server.get_messagesIn()
                 if downtop_data is None:
                     break
                 [self.append_downtop_tasks(data_peace) for data_peace in downtop_data]
