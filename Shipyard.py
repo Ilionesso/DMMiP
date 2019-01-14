@@ -29,7 +29,7 @@ class Shipyard(Thread): # make a singletone?
             while True:
                 print("check for downtop responces")
                 downtop_data = self.server.get_messagesIn()
-                if downtop_data is None:
+                if downtop_data is []:
                     break
                 [self.append_downtop_tasks(data_peace) for data_peace in downtop_data]
 
