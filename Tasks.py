@@ -15,7 +15,6 @@ class EntryTask:
     task_type = TaskType.INTRO
 
     def __init__(self):
-        super().__init__()
         self.matrix_a = readMatrixA()
         self.matrix_b = readMatrixB()
         self.original_tam = self.matrix_a.shape[0]
@@ -38,7 +37,6 @@ class TopDownTask:
     task_type = TaskType.TOPDOWN
 
     def __init__(self, master_task_id, current_id, matrix_a, matrix_b):
-        super().__init__()
         self.master_task_id = master_task_id
         self.current_id = current_id
         self.matrix_a = matrix_a
@@ -95,7 +93,6 @@ class DownTopTask:
 class TaskResponse:
 
     def __init__(self, task_id, p_id, matrix, target_host='', target_port=''):
-        super().__init__()
         self.task_id = task_id
         self.p_id = p_id
         self.matrix = matrix
