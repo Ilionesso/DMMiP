@@ -53,7 +53,7 @@ class Shipyard(Thread): # make a singletone?
 
             if self.worker.state == WorkerState.WAITING:
                 print("check for downtop tasks")  # try to get and compute downtop tasks
-                for downtop_task in self.downtop_tasks:
+                for downtop_task_num, downtop_task in self.downtop_tasks.items():
                     if downtop_task.is_complete():
                         self.downtop_tasks.pop(downtop_task)
                         self.worker.task = downtop_task
