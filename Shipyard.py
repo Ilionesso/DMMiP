@@ -42,6 +42,7 @@ class Shipyard(Thread): # make a singletone?
                 print("check for topdown tasks")
                 topdown_task = consume(self.consumer)
                 if topdown_task is not None:
+                    print("got a topdown task" + topdown_task.master_task_id + topdown_task.current_id)
                     self.def_in += 1
                     new_downtop_awaited_task = DownTopTask(topdown_task.master_host,
                                                            topdown_task.master_port,
@@ -55,9 +56,12 @@ class Shipyard(Thread): # make a singletone?
                 print("check for downtop tasks")  # try to get and compute downtop tasks
                 for downtop_task_num, downtop_task in self.downtop_tasks.items():
                     if downtop_task.is_complete():
+                        print("downtop task " + downtop_task_num + " is complete")
                         self.downtop_tasks.pop(downtop_task)
                         self.worker.task = downtop_task
                         self.worker.state = WorkerState.BUSY
+                    else:
+                        print("downtop task " + downtop_task_num + " is NOT complete")
 
     def parse_and_send_computed(self, output):
         if output.task_type == TaskType.TOPDOWN:
