@@ -26,11 +26,10 @@ class Shipyard(Thread): # make a singletone?
 
     def run(self):
         while True:
-            while True:
-                print("check for downtop responces")
-                downtop_data = self.server.get_messagesIn()
-                if downtop_data is []:
-                    break
+
+            print("check for downtop responces")
+            downtop_data = self.server.get_messagesIn()
+            if downtop_data:
                 [self.append_downtop_tasks(data_peace) for data_peace in downtop_data]
 
             if self.worker.state == WorkerState.DONE:

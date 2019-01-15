@@ -21,7 +21,7 @@ class EntryTask:
 
     def compute(self):
         adapted_matrices = adapt_odd_matrices(self.matrix_a, self.matrix_b)
-        task = TopDownTask('', 0, adapted_matrices[0], adapted_matrices[1])
+        task = TopDownTask('', '0', adapted_matrices[0], adapted_matrices[1])
         output = task.compute()
         if type(output) == list:
             return output

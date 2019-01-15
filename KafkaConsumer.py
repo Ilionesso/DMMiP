@@ -13,4 +13,7 @@ def init_kafka_consumer(topic_name='strassen'):
 
 
 def consume(consumer):
-    return next(consumer)
+    try:
+        return next(consumer)
+    except Exception as e:
+        return None
