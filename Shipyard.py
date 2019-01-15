@@ -88,7 +88,7 @@ class Shipyard(Thread): # make a singletone?
         entry_task = EntryTask()
         output = entry_task.compute()
         if type(output) == list:
-            self.downtop_tasks[0] = DownTopTask(None, None, None, 0)
+            self.downtop_tasks[0] = DownTopTask('', '', '', 0)
             [self.send_topdown_task(task) for task in output]
 
 

@@ -22,7 +22,7 @@ class EntryTask:
 
     def compute(self):
         adapted_matrices = adapt_odd_matrices(self.matrix_a, self.matrix_b)
-        task = TopDownTask(None, 0, adapted_matrices[0], adapted_matrices[1])
+        task = TopDownTask('', 0, adapted_matrices[0], adapted_matrices[1])
         output = task.compute()
         if type(output) == list:
             return output
@@ -55,7 +55,7 @@ class TopDownTask:
     def make_next_topdown_tasks(self):
         output = []
         p_instructions = prepare_p_instructions(self.matrix_a, self.matrix_b)
-        for instruction_id, instruction in iter(p_instructions):
+        for instruction_id, instruction in iter(p_instructions.items()):
             output.append(TopDownTask(self.master_task_id + self.current_id,
                                       instruction_id,
                                       instruction['matrix_a'],
@@ -71,7 +71,6 @@ class DownTopTask:
     task_type = TaskType.DOWNTOP
 
     def __init__(self, master_host, master_port, master_task_id, current_id, original_tam=None):
-        super().__init__()
         self.master_host = master_host
         self.master_port = master_port
         self.current_id = current_id
@@ -95,7 +94,7 @@ class DownTopTask:
 
 class TaskResponse:
 
-    def __init__(self, task_id, p_id, matrix, target_host=None, target_port=None):
+    def __init__(self, task_id, p_id, matrix, target_host='', target_port=''):
         super().__init__()
         self.task_id = task_id
         self.p_id = p_id
